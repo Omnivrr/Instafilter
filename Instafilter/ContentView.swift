@@ -26,6 +26,15 @@ struct ContentView: View {
         .sheet(isPresented: $showingImagePicker) {
             ImagePicker(image: $inputImage)
         }
+        .onChange(of: inputImage) { _ in loadImage() }
+    }
+    
+    
+    func loadImage() {
+        guard let inputImage = inputImage else { return }
+        image = Image(uiImage: inputImage)
+        
+        UIImageWriteToSavedPhotosAlbum(inputImage, nil, nil, nil)
     }
 }
 
