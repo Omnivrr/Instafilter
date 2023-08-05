@@ -20,7 +20,7 @@ struct ContentView: View {
         .onAppear(perform: loadImage)
     }
     func loadImage() {
-        guard let inputImage = UIImage(named: "Example") else { return }
+        guard let inputImage = UIImage(named: "singapore") else { return }
         let beginImage = CIImage(image: inputImage)
         
         let context = CIContext()
