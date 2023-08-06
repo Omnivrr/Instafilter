@@ -40,6 +40,7 @@ struct ContentView: View {
             HStack {
                 Text("Intensity")
                 Slider(value: $filterIntensity)
+                    .onChange(of: filterIntensity) { _ in applyProcessing() }
             }
             .padding(.vertical)
             
