@@ -10,37 +10,46 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var image: Image?
-    @State private var inputImage: UIImage?
-    @State private var showingImagePicker = false
+    @State private var filterIntensity = 0.5
     
     var body: some View {
         VStack {
-            image?
-                .resizable()
-                .scaledToFit()
-            
-            Button("Select Image") {
-                showingImagePicker = true
-            }
-            Button("Save Image") {
-                guard let inputImage = inputImage else { return }
+            ZStack {
+                Rectangle()
+                    .fill(.secondary)
                 
-                let imageSaver = ImageSaver()
-                imageSaver.writeToPhotoAlbum(image: inputImage)
+                Text("Tap to select a picture")
+                    .foregroundColor(.white)
+                    .font(.headline)
+                
+                image?
+                    .resizable()
+                    .scaledToFit()
+            }
+            .onTapGesture {
+                // Select an image
+            }
+            
+            HStack {
+                Text("Intensity")
+                Slider(value: $filterIntensity)
+            }
+            .padding(.vertical)
+            
+            HStack {
+                Button("Change filler") {
+                    // change filter
+                }
+                
+                Spacer()
+                
+                Button("Save") {
+                    
+                }
             }
         }
-        .sheet(isPresented: $showingImagePicker) {
-            ImagePicker(image: $inputImage)
-        }
-        .onChange(of: inputImage) { _ in loadImage() }
-    }
-    
-    
-    func loadImage() {
-        guard let inputImage = inputImage else { return }
-        image = Image(uiImage: inputImage)
-        
-        UIImageWriteToSavedPhotosAlbum(inputImage, nil, nil, nil)
+        .padding([.horizontal, .bottom])
+        .navigationTitle("Instafilter")
     }
 }
 
