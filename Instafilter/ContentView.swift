@@ -123,3 +123,8 @@ struct ContentView: View {
         loadImage()
     }
 }
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
