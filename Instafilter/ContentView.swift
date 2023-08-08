@@ -59,7 +59,7 @@ struct ContentView: View {
                     
                     HStack {
                         Text("Radius")
-                        Slider(value: $filterRadius)
+                        Slider(value: $filterRadius, in: 0...200)
                             .onChange(of: filterIntensity) { _ in applyProcessing() }
                     }
                     .padding(.vertical)
@@ -69,7 +69,7 @@ struct ContentView: View {
                 if currentFilter.inputKeys.contains(kCIInputScaleKey) {
                     HStack {
                         Text("Scale")
-                        Slider(value: $filterScale)
+                        Slider(value: $filterScale, in: 0...10)
                             .onChange(of: filterIntensity) { _ in applyProcessing() }
                     }
                     .padding(.vertical)
@@ -95,15 +95,23 @@ struct ContentView: View {
                 ImagePicker(image: $inputImage)
             }
             .confirmationDialog("Select a filter", isPresented: $showingFilterSheet) {
-                Button("Crystallize") { setFilter(CIFilter.crystallize()) }
-                Button("Edges") { setFilter(CIFilter.edges()) }
-                Button("Gaussian Blur") { setFilter(CIFilter.gaussianBlur()) }
-                Button("Pixellate") { setFilter(CIFilter.pixellate()) }
-                Button("Sepia Tone") { setFilter(CIFilter.sepiaTone()) }
-                Button("Unsharp Mask") { setFilter(CIFilter.unsharpMask()) }
-                Button("Vignette") { setFilter(CIFilter.vignette()) }
-                Button("Cancel", role: .cancel) { }
-            }
+                Group {
+                    Button("Crystallize") { setFilter(CIFilter.crystallize()) }
+                    Button("Edges") { setFilter(CIFilter.edges()) }
+                    Button("Gaussian Blur") { setFilter(CIFilter.gaussianBlur()) }
+                    Button("Pixellate") { setFilter(CIFilter.pixellate()) }
+                    Button("Sepia Tone") { setFilter(CIFilter.sepiaTone()) }
+                    Button("Unsharp Mask") { setFilter(CIFilter.unsharpMask()) }
+                    Button("Vignette") { setFilter(CIFilter.vignette()) }
+                    Button("Pointillize") { setFilter(CIFilter.pointillize()) }
+                    Button("Bloom") { setFilter(CIFilter.bloom()) }
+                    Button("Vibrance") { setFilter(CIFilter.vibrance()) }
+                }
+                    Group {
+                        Button("Cancel") { }
+                        
+                    }
+                }
             .alert("Oh no", isPresented: $showingFilterSheet) {
                 Button("Ok") { }
                 
