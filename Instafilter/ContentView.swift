@@ -12,6 +12,8 @@ import SwiftUI
 struct ContentView: View {
     @State private var image: Image?
     @State private var filterIntensity = 0.5
+    @State private var filterRadius = 5.0
+    @State private var filterScale = 5.0
 
     @State private var showingImagePicker = false
     @State private var inputImage: UIImage?
@@ -21,6 +23,7 @@ struct ContentView: View {
     let context = CIContext()
 
     @State private var showingFilterSheet = false
+    @State private var shwoingSaveError = false
 
     var body: some View {
         NavigationView {
@@ -40,13 +43,38 @@ struct ContentView: View {
                 .onTapGesture {
                     showingImagePicker = true
                 }
-
-                HStack {
-                    Text("Intensity")
-                    Slider(value: $filterIntensity)
-                        .onChange(of: filterIntensity) { _ in applyProcessing() }
+                
+                if currentFilter.inputKeys.contains(kCIInputIntensityKey) {
+                    
+                    
+                    HStack {
+                        Text("Intensity")
+                        Slider(value: $filterIntensity)
+                            .onChange(of: filterIntensity) { _ in applyProcessing() }
+                    }
+                    .padding(.vertical)
                 }
-                .padding(.vertical)
+                
+                if currentFilter.inputKeys.contains(kCIInputRadiusKey) {
+                    
+                    HStack {
+                        Text("Radius")
+                        Slider(value: $filterRadius)
+                            .onChange(of: filterIntensity) { _ in applyProcessing() }
+                    }
+                    .padding(.vertical)
+                }
+                
+                
+                if currentFilter.inputKeys.contains(kCIInputScaleKey) {
+                    HStack {
+                        Text("Scale")
+                        Slider(value: $filterScale)
+                            .onChange(of: filterIntensity) { _ in applyProcessing() }
+                    }
+                    .padding(.vertical)
+                }
+
 
                 HStack {
                     Button("Change Filter") {
@@ -75,6 +103,12 @@ struct ContentView: View {
                 Button("Unsharp Mask") { setFilter(CIFilter.unsharpMask()) }
                 Button("Vignette") { setFilter(CIFilter.vignette()) }
                 Button("Cancel", role: .cancel) { }
+            }
+            .alert("Oh no", isPresented: $showingFilterSheet) {
+                Button("Ok") { }
+                
+            } message: {
+                Text("There was an error saving your image - Please make sure you have allowed permission forr this app to save photos.")
             }
         }
     }
@@ -108,8 +142,8 @@ struct ContentView: View {
         let inputKeys = currentFilter.inputKeys
 
         if inputKeys.contains(kCIInputIntensityKey) { currentFilter.setValue(filterIntensity, forKey: kCIInputIntensityKey) }
-        if inputKeys.contains(kCIInputRadiusKey) { currentFilter.setValue(filterIntensity * 200, forKey: kCIInputRadiusKey) }
-        if inputKeys.contains(kCIInputScaleKey) { currentFilter.setValue(filterIntensity * 10, forKey: kCIInputScaleKey) }
+        if inputKeys.contains(kCIInputRadiusKey) { currentFilter.setValue(filterRadius, forKey: kCIInputRadiusKey) }
+        if inputKeys.contains(kCIInputScaleKey) { currentFilter.setValue(filterScale, forKey: kCIInputScaleKey) }
 
         guard let outputImage = currentFilter.outputImage else { return }
 
