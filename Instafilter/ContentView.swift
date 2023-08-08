@@ -11,7 +11,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var image: Image?
-    @State private var filterIntensity = 0.8
+    @State private var filterIntensity = 0.5
 
     @State private var showingImagePicker = false
     @State private var inputImage: UIImage?
@@ -56,6 +56,8 @@ struct ContentView: View {
                     Spacer()
 
                     Button("Save", action: save)
+                        .disabled(inputImage == nil)
+
                 }
             }
             .padding([.horizontal, .bottom])
