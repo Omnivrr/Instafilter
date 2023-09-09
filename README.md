@@ -1,5 +1,4 @@
 # Instafilter
-Image editing application
 This is a simple iOS application that demonstrates the use of SwiftUI and built-in filters to apply various filters to images within the app. 
 
 Features
